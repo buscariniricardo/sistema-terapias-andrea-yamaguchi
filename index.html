@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<!-- Tag essencial que avisa o navegador para ajustar o site à largura real do dispositivo (PC, Tablet ou Telemóvel) -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1b6252">
+<!-- ==========================================================================
+     CONFIGURAÇÃO DE WEB APP (MODO APLICATIVO PARA TELEMÓVEL)
+     Coloca estas linhas dentro do <head>, logo abaixo de <meta name="theme-color"...>
+     ========================================================================== -->
+
+<!-- Parâmetro 'yes': Permite abrir em ecrã inteiro em telemóveis Android -->
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- Parâmetro 'yes': Permite abrir em ecrã inteiro em iPhones (iOS) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<!-- Define o estilo da barra superior no iPhone (pode ser 'default' ou 'black-translucent') -->
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<!-- PARÂMETRO AJUSTÁVEL: Nome que aparece por baixo do ícone no ecrã do telemóvel -->
+<meta name="apple-mobile-web-app-title" content="Andrea Terapias">
+<title>Andrea Yamaguchi | Terapias Holísticas</title>
+
+<style>
+/* ==========================================================================
+   1. VARIÁVEIS DE CORES E ESTILOS GERAIS (:root)
+   Paleta verde pastel, sálvia e creme mantendo excelente contraste de leitura.
+   ========================================================================== */
+:root {
+  --green: #1b6252;          /* Verde principal */
+  --green-dark: #134b3e;     /* Verde escuro para efeito hover (passar o rato) */
+  --green-deep: #154d42;     /* Verde profundo para títulos */
+  --sage: #e6efe6;           /* Verde sálvia pastel */
+  --sage-soft: #eef4ee;      /* Verde suave para fundos secundários */
+  --cream: #f8f7f2;          /* Fundo principal creme suave */
+  --paper: #fdfcf9;          /* Fundo de cartões e cabeçalho */
+  --text: #22423c;           /* Cor do texto principal */
+  --muted: #4a6761;          /* Cor de textos secundários */
+  --line: #cddbd2;           /* Cor das bordas suaves */
+  --white: #ffffff;
+  --shadow: 0 10px 28px rgba(20, 65, 55, .08);
+  --radius: 18px;
+  --max-width: 1120px;       /* PARÂMETRO AJUSTÁVEL: Largura máxima do conteúdo em ecrãs grandes de PC */
+}
+
+/* Reset básico */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.55;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+button, a { font: inherit; }
+
+/* Destaque de acessibilidade para navegação por teclado (Tecla TAB) */
+button:focus-visible, a:focus-visible, [tabindex]:focus-visible {
+  outline: 3px solid #c27a25;
+  outline-offset: 3px;
+}
+
+button { cursor: pointer; }
+
+/* ==========================================================================
+   2. ESTRUTURA DE ECRÃ INTEIRO (Sem moldura falsa de telemóvel)
+   ========================================================================== */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Contentor centralizador para manter o conteúdo alinhado em monitores grandes */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   3. CABEÇALHO E NAVEGAÇÃO SUPERIOR
+   ========================================================================== */
+header {
+  background: var(--paper);
+  border-bottom: 1px solid #e5ebe4;
+  position: sticky;
+  top: 0;
+  z-index: 15;
+}
+.header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.logo {
+  width: 52px;
+  height: 44px;
+  flex: none;
+  color: var(--green);
+  display: grid;
+  place-items: center;
+}
+.logo svg { width: 52px; height: 44px; }
+.brand-name {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--green-deep);
+  line-height: 1.15;
+}
+.brand-sub {
+  font-size: .86rem;
+  letter-spacing: .04em;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* Botão de 3 linhas (visível em telemóveis e tablets; pode ser usado em qualquer ecrã) */
+.icon-button {
+  border: 0;
+  background: transparent;
+  color: var(--green-deep);
+  padding: 8px;
+  border-radius: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+}
+.icon-button:hover { background: var(--sage-soft); }
+.icon-button svg { width: 26px; height: 26px; }
+
+/* Painel do menu superior */
+.menu-panel {
+  display: none;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+.menu-panel.open { display: block; }
+.menu-panel-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 12px 24px 16px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.menu-panel button {
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--green-deep);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: .92rem;
+  font-weight: 600;
+  transition: background .15s;
+}
+.menu-panel button:hover { background: var(--sage-soft); }
+
+/* ==========================================================================
+   4. SISTEMA DE ECRÃS (Alternância suave entre páginas)
+   ========================================================================== */
+main { flex: 1; display: flex; flex-direction: column; }
+.screen { display: none; flex: 1; animation: fade .2s ease; }
+.screen.active { display: flex; flex-direction: column; }
+
+@keyframes fade {
+  from { opacity: .45; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   5. TELA INICIAL (Banner Hero, Ícones, Cartão Sobre e Botões)
+   ========================================================================== */
+.hero-wrapper {
+  background: linear-gradient(115deg, #f8f7f2 0%, #f1f5eb 58%, #e1ece0 100%);
+  border-bottom: 1px solid #e6eee5;
+}
+.home-hero {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 36px 24px 28px;
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-copy { z-index: 2; }
+
+h1, h2, h3, p { margin-top: 0; }
+h1 {
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  line-height: 1.12;
+  letter-spacing: -.02em;
+  color: var(--green-deep);
+  margin: 0 0 16px;
+}
+h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.2;
+  color: var(--green-deep);
+  margin-bottom: 10px;
+}
+h3 {
+  color: var(--green-deep);
+  font-size: 1.15rem;
+  margin-bottom: 6px;
+}
+.lead {
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  color: #2f514b;
+  max-width: 560px;
+  margin-bottom: 0;
+  line-height: 1.55;
+}
+
+/* Ilustração artística de pedras zen e folhas */
+.hero-art {
+  position: relative;
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+}
+.hero-art:before {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(205,225,200,.75) 0%, rgba(205,225,200,0) 70%);
+}
+.plant { position: relative; width: 200px; height: 220px; }
+.stone {
+  position: absolute; right: 12px; bottom: 18px; width: 150px; height: 52px;
+  border-radius: 50%; background: linear-gradient(180deg, #dcd6c8, #b8b2a4);
+  box-shadow: 0 10px 16px rgba(80, 90, 80, .22);
+}
+.stone:before {
+  content: ""; position: absolute; left: 18px; top: -26px; width: 115px; height: 44px;
+  border-radius: 50%; background: linear-gradient(180deg, #ece8dd, #cbc5b7);
+  border: 1px solid #c5bfb0;
+}
+.leaf {
+  position: absolute; width: 58px; height: 115px;
+  background: linear-gradient(145deg, #6f9e6b, #2e684d);
+  border-radius: 100% 0 100% 0; transform-origin: bottom right;
+}
+.leaf:after {
+  content: ""; position: absolute; width: 1.5px; height: 92px;
+  background: rgba(230, 240, 225, .6); left: 50%; top: 10px; transform: rotate(-15deg);
+}
+.leaf.one { right: 74px; top: 4px; transform: rotate(-25deg); }
+.leaf.two { right: 32px; top: 28px; transform: rotate(16deg) scale(.88); }
+.leaf.three { right: 106px; top: 50px; transform: rotate(-55deg) scale(.72); }
+
+/* Conteúdo principal da Home */
+.home-body {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 20px 24px 28px;
+  width: 100%;
+}
+
+/* Faixa com ícones de Localização (Yokkaichi) e Computador (On-line) */
+.info-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  padding: 6px 0 22px;
+  color: var(--text);
+  font-size: .95rem;
+}
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  line-height: 1.35;
+}
+.info-icon {
+  color: var(--green);
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+.info-icon svg { width: 26px; height: 26px; }
+
+/* Cartão "Sobre a terapeuta" interativo */
+.about-card {
+  margin-bottom: 22px;
+  padding: 22px 24px;
+  background: var(--sage);
+  border: 1px solid #d4e3d4;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  text-align: left;
+  width: 100%;
+  transition: transform .12s, background .12s, box-shadow .12s;
+}
+.about-card:hover {
+  background: #dce9dc;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+.about-card p {
+  margin-bottom: 0;
+  font-size: .98rem;
+  color: #2c4c45;
+  max-width: 820px;
+}
+.about-arrow {
+  color: var(--green-deep);
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+.about-arrow svg { width: 22px; height: 22px; }
+
+/* Botões principais */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  min-height: 58px;
+  padding: 12px 22px;
+  border: 1.5px solid var(--green);
+  border-radius: 14px;
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--green-deep);
+  background: var(--paper);
+  transition: transform .12s, background .12s;
+  width: 100%;
+}
+.btn:hover { transform: translateY(-1px); background: var(--sage-soft); }
+.btn.primary {
+  background: var(--green);
+  color: var(--white);
+  border-color: var(--green);
+}
+.btn.primary:hover { background: var(--green-dark); }
+.btn .btn-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.btn .btn-icon svg { width: 32px; height: 32px; }
+.btn .arrow {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+}
+.btn .arrow svg { width: 20px; height: 20px; }
+.btn.small {
+  min-height: 44px;
+  padding: 8px 18px;
+  font-size: .95rem;
+  justify-content: center;
+  width: auto;
+}
+
+/* Ondas decorativas suaves no final da tela inicial */
+.bottom-waves {
+  margin-top: auto;
+  height: 84px;
+  width: 100%;
+  overflow: hidden;
+}
+.bottom-waves svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ==========================================================================
+   6. TELAS INTERNAS (Sobre a Terapeuta, Catálogo e Contato)
+   ========================================================================== */
+.screen-content {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 32px 24px 40px;
+  width: 100%;
+  flex: 1;
+}
+.eyebrow {
+  color: var(--green);
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: .78rem;
+  margin-bottom: 6px;
+}
+
+/* Cartão de Perfil Profissional */
+.profile-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow);
+}
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5ece6;
+}
+.profile-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--sage);
+  color: var(--green);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.profile-avatar svg { width: 34px; height: 34px; }
+.profile-pillars {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0 0;
+  display: grid;
+  gap: 12px;
+}
+.profile-pillars li {
+  background: var(--sage-soft);
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: .95rem;
+  color: var(--text);
+}
+.profile-pillars strong { color: var(--green-deep); }
+
+/* Catálogo de Terapias */
+.screen-intro { margin-bottom: 22px; }
+.screen-intro p { margin-bottom: 0; color: var(--muted); font-size: 1.02rem; }
+.therapy-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.therapy-card {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper);
+  cursor: pointer;
+  transition: transform .15s, border-color .15s, box-shadow .15s;
+}
+.therapy-card:hover {
+  border-color: var(--green);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+.therapy-visual {
+  height: 76px;
+  border-radius: 12px;
+  background: var(--sage);
+  display: grid;
+  place-items: center;
+  color: var(--green);
+}
+.therapy-visual svg { width: 36px; height: 36px; }
+.therapy-card h3 { font-size: 1.1rem; margin-bottom: 4px; }
+.therapy-card p { font-size: .92rem; margin: 0 0 8px; color: var(--muted); }
+.therapy-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .86rem;
+  color: var(--green-deep);
+  font-weight: 600;
+}
+.price { font-weight: 700; color: var(--green); }
+.card-arrow {
+  border: 0;
+  background: var(--sage-soft);
+  color: var(--green);
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+}
+.card-arrow svg { width: 18px; height: 18px; }
+
+.note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--sage);
+  margin: 22px 0;
+  color: #294e46;
+  font-size: .92rem;
+}
+.back-row { display: flex; justify-content: center; margin-top: 18px; }
+
+/* Tela de Contato / Resultado */
+.result-wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 36px 24px 44px;
+  flex: 1;
+}
+.whatsapp-art {
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--sage);
+  color: var(--green);
+}
+.whatsapp-art svg { width: 54px; height: 54px; }
+.result-copy { font-size: 1.02rem; color: var(--muted); margin: 0 auto 24px; }
+.result-actions { display: grid; gap: 12px; margin: 20px auto; }
+.help-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+  background: var(--sage-soft);
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  padding: 16px;
+  margin-top: 22px;
+  font-size: .92rem;
+}
+.help-card p { margin: 0; }
+
+/* ==========================================================================
+   7. BARRA DE NAVEGAÇÃO INFERIOR
+   ========================================================================== */
+footer {
+  border-top: 1px solid #e2e8e0;
+  background: var(--paper);
+  padding: 10px 24px 14px;
+  position: sticky;
+  bottom: 0;
+  z-index: 15;
+}
+.bottom-nav {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  min-width: 84px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: .85rem;
+}
+.nav-item:hover { background: var(--sage-soft); }
+.nav-item .nav-icon {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+}
+.nav-item .nav-icon svg { width: 22px; height: 22px; }
+.nav-item[aria-current="page"] {
+  font-weight: 700;
+  color: var(--green-deep);
+}
+
+/* Componente de notificação rápida (Toast) */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 84px;
+  transform: translateX(-50%);
+  max-width: calc(100% - 28px);
+  padding: 12px 18px;
+  background: var(--green-deep);
+  color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  z-index: 30;
+  display: none;
+  font-size: .92rem;
+}
+.toast.show { display: block; }
+
+/* ==========================================================================
+   8. ADAPTAÇÃO PARA COMPUTADORES E TABLETS (@media queries)
+   Aqui garantimos que o site aproveita o ecrã largo do computador!
+   ========================================================================== */
+@media (min-width: 768px) {
+  /* No computador e tablet em modo paisagem, os 2 botões principais ficam lado a lado */
+  .actions {
+    grid-template-columns: 1fr 1fr;
+  }
+  /* Os 3 pilares na página Sobre a Terapeuta ficam em 3 colunas */
+  .profile-pillars {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  /* Os cartões de terapias organizam-se em grelha no computador */
+  .therapy-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .therapy-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+    padding: 22px 18px;
+  }
+  .therapy-visual {
+    width: 76px;
+  }
+  .therapy-meta {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Ajustes finos para telemóveis */
+  .header-inner, .home-hero, .home-body, .screen-content {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  .home-hero {
+    grid-template-columns: 1.15fr .85fr;
+    padding-top: 22px;
+    padding-bottom: 14px;
+  }
+  .info-strip {
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    gap: 10px;
+    font-size: .85rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- 1. CABEÇALHO REAL DO SITE (Sem a barra falsa de telemóvel 9:41) -->
+  <header>
+    <div class="header-inner">
+      <div class="brand" data-go="home" aria-label="Andrea Yamaguchi — Terapias Holísticas (Ir para o início)">
+        <div class="logo" aria-hidden="true">
+          <!-- Ícone Vetorial da Flor de Lótus -->
+          <svg viewBox="0 0 64 52" fill="none">
+            <path d="M32 46C18 44 10 35 6 24C14 23 22 28 27 38" fill="#dceadd" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M32 46C46 44 54 35 58 24C50 23 42 28 37 38" fill="#dceadd" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M32 46C20 39 15 26 17 13C25 17 30 26 32 39" fill="#e8f2e8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M32 46C44 39 49 26 47 13C39 17 34 26 32 39" fill="#e8f2e8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M32 46C24 34 24 18 32 5C40 18 40 34 32 46Z" fill="#f4f8f4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-name">Andrea Yamaguchi</div>
+          <div class="brand-sub">Terapias Holísticas</div>
+        </div>
+      </div>
+
+      <!-- Botão de 3 linhas para abrir/fechar o menu superior -->
+      <button class="icon-button" id="menuToggle" aria-label="Abrir menu de navegação" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- 2. PAINEL DO MENU RETRÁTIL -->
+  <nav class="menu-panel" id="menuPanel" aria-label="Menu principal">
+    <div class="menu-panel-inner">
+      <button data-go="home">Início</button>
+      <button data-go="about">Sobre a terapeuta</button>
+      <button data-go="catalog">Terapias disponíveis</button>
+      <button data-contact>Falar pelo WhatsApp</button>
+    </div>
+  </nav>
+
+  <!-- 3. CONTEÚDO PRINCIPAL (Adaptável a Computador, Tablet e Telemóvel) -->
+  <main>
+
+    <!-- ================= ECRÃ 1: INÍCIO ================= -->
+    <section class="screen active" id="home" aria-labelledby="homeTitle">
+      <div class="hero-wrapper">
+        <div class="home-hero">
+          <div class="hero-copy">
+            <h1 id="homeTitle">Equilíbrio<br>para o seu bem-estar</h1>
+            <p class="lead">Terapias holísticas que promovem harmonia entre corpo, mente e emoções. Atendimentos presenciais em Yokkaichi e on-line.</p>
+          </div>
+          <div class="hero-art" role="img" aria-label="Ilustração decorativa de folhas e pedras em equilíbrio">
+            <div class="plant" aria-hidden="true">
+              <span class="leaf one"></span>
+              <span class="leaf two"></span>
+              <span class="leaf three"></span>
+              <span class="stone"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-body">
+        <!-- Ícones vetoriais de Localização e Computador -->
+        <div class="info-strip">
+          <div class="info-item">
+            <span class="info-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+              </svg>
+            </span>
+            <span>Atendimento<br>presencial em Yokkaichi</span>
+          </div>
+          <div class="info-item">
+            <span class="info-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </span>
+            <span>Atendimento<br>on-line</span>
+          </div>
+        </div>
+
+        <!-- Cartão "Sobre a terapeuta" clicável -->
+        <button class="about-card" data-go="about" aria-label="Saber mais sobre a terapeuta Andrea Yamaguchi">
+          <div>
+            <h3>Sobre a terapeuta</h3>
+            <p>Com uma abordagem integrativa, Andrea Yamaguchi oferece terapias que auxiliam no equilíbrio físico, emocional e energético.</p>
+          </div>
+          <span class="about-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </span>
+        </button>
+
+        <!-- Botões de Ação (Ficam lado a lado no PC e empilhados no telemóvel) -->
+        <div class="actions">
+          <button class="btn primary" data-go="catalog">
+            <span class="btn-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 52" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M32 46C18 44 10 35 6 24C14 23 22 28 27 38"/>
+                <path d="M32 46C46 44 54 35 58 24C50 23 42 28 37 38"/>
+                <path d="M32 46C20 39 15 26 17 13C25 17 30 26 32 39"/>
+                <path d="M32 46C44 39 49 26 47 13C39 17 34 26 32 39"/>
+                <path d="M32 46C24 34 24 18 32 5C40 18 40 34 32 46Z"/>
+              </svg>
+            </span>
+            <span>Conhecer terapias</span>
+            <span class="arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </span>
+          </button>
+
+          <button class="btn" data-contact>
+            <span class="btn-icon" aria-hidden="true" style="color:var(--green)">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 2a10 10 0 0 0-8.66 15l-1.34 5 5.15-1.35A10 10 0 1 0 12 2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M8.5 8.5c.3-.6.7-.7 1.1-.7.3 0 .6 0 .8.5.3.6.8 1.8.8 2 0 .2-.1.5-.3.7-.2.2-.4.4-.2.8.3.5 1 1.6 2.2 2.1.4.2.7.1.9-.1.3-.3.6-.7.8-.9.2-.2.5-.2.8-.1.3.1 1.9.9 2.1 1.1.2.2.2.7-.1 1.3-.3.6-1.3 1.2-2.1 1.2-.8 0-2.3-.3-4.2-1.6-2-1.4-3.2-3.4-3.4-4.2-.2-.8.2-1.7.8-2.1z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span>Falar pelo WhatsApp</span>
+            <span class="arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Ilustração inferior de ondas suaves e ramo de folhas -->
+      <div class="bottom-waves" aria-hidden="true">
+        <svg viewBox="0 0 400 80" preserveAspectRatio="none">
+          <path d="M0 30 Q 120 0, 260 40 T 400 25 L 400 80 L 0 80 Z" fill="#e8efe6"/>
+          <path d="M0 55 Q 160 25, 310 55 T 400 45 L 400 80 L 0 80 Z" fill="#dce7da"/>
+          <g fill="#9ab596" opacity="0.85">
+            <path d="M18 80 Q 32 52, 58 32" stroke="#8aa686" stroke-width="2" fill="none"/>
+            <path d="M26 62 C 18 48, 24 34, 34 30 C 38 42, 34 54, 26 62 Z"/>
+            <path d="M40 48 C 36 32, 48 20, 62 18 C 60 32, 50 44, 40 48 Z"/>
+            <path d="M34 65 C 48 58, 62 62, 68 70 C 56 76, 42 72, 34 65 Z"/>
+            <path d="M48 52 C 62 45, 76 48, 82 56 C 70 62, 56 58, 48 52 Z"/>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ================= ECRÃ 2: SOBRE A TERAPEUTA ================= -->
+    <section class="screen" id="about" aria-labelledby="aboutTitle">
+      <div class="screen-content">
+        <div class="eyebrow">Conheça a profissional</div>
+        <h2 id="aboutTitle">Andrea Yamaguchi</h2>
+
+        <div class="profile-card">
+          <div class="profile-header">
+            <div class="profile-avatar" aria-hidden="true">
+              <svg viewBox="0 0 64 52" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M32 46C20 39 15 26 17 13C25 17 30 26 32 39"/>
+                <path d="M32 46C44 39 49 26 47 13C39 17 34 26 32 39"/>
+                <path d="M32 46C24 34 24 18 32 5C40 18 40 34 32 46Z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 style="margin-bottom:2px">Terapeuta Holística e Integrativa</h3>
+              <div style="font-size:.9rem;color:var(--muted)">Atendimento em Yokkaichi (Japão) e On-line</div>
+            </div>
+          </div>
+
+          <p>
+            Com uma trajetória dedicada ao cuidado humano e ao autoconhecimento, <strong>Andrea Yamaguchi</strong> atua através de práticas integrativas que olham para o ser humano como um todo — unindo corpo físico, mente, emoções e energia.
+          </p>
+          <p style="margin-bottom:0">
+            O seu propósito é oferecer um espaço seguro, acolhedor e tranquilo para quem procura aliviar tensões do dia a dia, restaurar a vitalidade e reencontrar o equilíbrio interior.
+          </p>
+
+          <ul class="profile-pillars">
+            <li><strong>✦ Escuta Acolhedora:</strong> Atendimento personalizado, respeitando o momento e a necessidade individual de cada pessoa.</li>
+            <li><strong>✦ Cuidado Integrativo:</strong> Combinação de técnicas orientais e energéticas como <em>Shiatsu</em>, <em>Reiki</em> e <em>Radiestesia</em>.</li>
+            <li><strong>✦ Presencial e Sem Fronteiras:</strong> Sessões presenciais em Yokkaichi e acompanhamento on-line para qualquer lugar do mundo.</li>
+          </ul>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" data-go="catalog">
+            <span>Ver terapias disponíveis</span>
+            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </button>
+          <button class="btn" data-contact>
+            <span>Agendar conversa pelo WhatsApp</span>
+            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </button>
+        </div>
+
+        <div class="back-row">
+          <button class="btn small" data-go="home">← &nbsp; Voltar ao início</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ECRÃ 3: CATÁLOGO DE TERAPIAS ================= -->
+    <section class="screen" id="catalog" aria-labelledby="catalogTitle">
+      <div class="screen-content">
+        <div class="screen-intro">
+          <div class="eyebrow">Encontre seu caminho</div>
+          <h2 id="catalogTitle">Terapias disponíveis</h2>
+          <p>Selecione a terapia que mais combina com o seu momento para agendar.</p>
+        </div>
+
+        <div class="therapy-list" id="therapyList">
+          <!-- Cartão 1: Radiestesia -->
+          <article class="therapy-card" data-therapy="Radiestesia" data-price="R$ 120,00">
+            <div class="therapy-visual" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 19 14 12 22 5 14 12 2"/><line x1="5" y1="14" x2="19" y2="14"/></svg>
+            </div>
+            <div>
+              <h3>Radiestesia</h3>
+              <p>Prática integrativa voltada à harmonização energética e clareza para o bem-estar.</p>
+              <div class="therapy-meta"><span>💻 On-line</span> • <span class="price">R$ 120,00</span></div>
+            </div>
+            <button class="card-arrow" aria-label="Selecionar Radiestesia">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </article>
+
+          <!-- Cartão 2: Shiatsu -->
+          <article class="therapy-card" data-therapy="Shiatsu" data-price="R$ 150,00">
+            <div class="therapy-visual" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22c4.97 0 9-4.03 9-9-4.97 0-9 4.03-9 9zm0 0c-4.97 0-9-4.03-9-9 4.97 0 9 4.03 9 9zm0-6c0-4.97-4.03-9-9-9 0 4.97 4.03 9 9 9zm0 0c0-4.97 4.03-9 9-9 0 4.97-4.03 9-9 9z"/></svg>
+            </div>
+            <div>
+              <h3>Shiatsu</h3>
+              <p>Terapia corporal japonesa que alivia tensões físicas e promove profundo relaxamento.</p>
+              <div class="therapy-meta"><span>📍 Presencial em Yokkaichi</span> • <span class="price">R$ 150,00</span></div>
+            </div>
+            <button class="card-arrow" aria-label="Selecionar Shiatsu">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </article>
+
+          <!-- Cartão 3: Reiki -->
+          <article class="therapy-card" data-therapy="Reiki" data-price="R$ 100,00">
+            <div class="therapy-visual" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+            </div>
+            <div>
+              <h3>Reiki</h3>
+              <p>Canalização de energia vital para equilíbrio emocional, serenidade e redução do estresse.</p>
+              <div class="therapy-meta"><span>💻 On-line / Presencial</span> • <span class="price">R$ 100,00</span></div>
+            </div>
+            <button class="card-arrow" aria-label="Selecionar Reiki">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </article>
+        </div>
+
+        <div class="note" role="note">
+          <span>ⓘ</span>
+          <span>Consulte a disponibilidade de horários e tire as suas dúvidas diretamente com a terapeuta pelo WhatsApp.</span>
+        </div>
+        <div class="back-row">
+          <button class="btn small" data-go="home">← &nbsp; Voltar ao início</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ECRÃ 4: CONTATO / CONFIRMAÇÃO ================= -->
+    <section class="screen" id="result" aria-labelledby="resultTitle">
+      <div class="result-wrap">
+        <div class="whatsapp-art" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2a10 10 0 0 0-8.66 15l-1.34 5 5.15-1.35A10 10 0 1 0 12 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M8.5 8.5c.3-.6.7-.7 1.1-.7.3 0 .6 0 .8.5.3.6.8 1.8.8 2 0 .2-.1.5-.3.7-.2.2-.4.4-.2.8.3.5 1 1.6 2.2 2.1.4.2.7.1.9-.1.3-.3.6-.7.8-.9.2-.2.5-.2.8-.1.3.1 1.9.9 2.1 1.1.2.2.2.7-.1 1.3-.3.6-1.3 1.2-2.1 1.2-.8 0-2.3-.3-4.2-1.6-2-1.4-3.2-3.4-3.4-4.2-.2-.8.2-1.7.8-2.1z" fill="currentColor"/>
+          </svg>
+        </div>
+        <h2 id="resultTitle">Falar com Andrea</h2>
+        <p class="result-copy" id="resultMessage">Clique abaixo para iniciar a conversa no WhatsApp (+55 19 99575-9720), tirar dúvidas ou agendar a sua sessão.</p>
+
+        <div class="result-actions">
+          <button class="btn primary" data-contact>
+            <span>Iniciar conversa no WhatsApp</span>
+            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </button>
+          <button class="btn" data-go="catalog">
+            <span>Ver catálogo de terapias</span>
+            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </button>
+          <button class="btn" data-go="home">
+            <span>Voltar à página inicial</span>
+            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </button>
+        </div>
+
+        <div class="help-card">
+          <span>🌿</span>
+          <p><strong>Atendimento humanizado:</strong><br>Assim que enviar a sua mensagem, a Andrea responderá o mais breve possível.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 4. BARRA DE NAVEGAÇÃO INFERIOR (Ícones: Casa, Folha e WhatsApp) -->
+  <footer>
+    <nav class="bottom-nav" aria-label="Navegação inferior">
+      <button class="nav-item" data-go="home" aria-current="page">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3L3 10.5h2.5V20h5v-5.5h3V20h5v-9.5H21L12 3z"/>
+          </svg>
+        </span>
+        <span>Início</span>
+      </button>
+
+      <button class="nav-item" data-go="catalog">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 4C11 4 5 9 5 17c0 1.5.3 2.5.3 2.5S6.5 20 8 20c8 0 12-6 12-16z"/>
+            <path d="M4 20c4-4 8-7 13-9"/>
+          </svg>
+        </span>
+        <span>Terapias</span>
+      </button>
+
+      <button class="nav-item" data-go="result">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2a10 10 0 0 0-8.66 15l-1.34 5 5.15-1.35A10 10 0 1 0 12 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M8.5 8.5c.3-.6.7-.7 1.1-.7.3 0 .6 0 .8.5.3.6.8 1.8.8 2 0 .2-.1.5-.3.7-.2.2-.4.4-.2.8.3.5 1 1.6 2.2 2.1.4.2.7.1.9-.1.3-.3.6-.7.8-.9.2-.2.5-.2.8-.1.3.1 1.9.9 2.1 1.1.2.2.2.7-.1 1.3-.3.6-1.3 1.2-2.1 1.2-.8 0-2.3-.3-4.2-1.6-2-1.4-3.2-3.4-3.4-4.2-.2-.8.2-1.7.8-2.1z" fill="currentColor"/>
+          </svg>
+        </span>
+        <span>Contato</span>
+      </button>
+    </nav>
+  </footer>
+
+</div>
+
+<!-- COMPONENTE DE AVISO RÁPIDO (TOAST) -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ==========================================================================
+     LÓGICA DE PROGRAMAÇÃO (JavaScript)
+     ========================================================================== -->
+<script>
+(function() {
+  // 1. CONFIGURAÇÃO DO WHATSAPP OFICIAL (+55 19 99575-9720)
+  const WHATSAPP_NUMBER = "5519995759720";
+
+  // 2. SELEÇÃO DOS ELEMENTOS DA PÁGINA
+  const screens = [...document.querySelectorAll('.screen')];
+  const navItems = [...document.querySelectorAll('.nav-item')];
+  const menuToggle = document.getElementById('menuToggle');
+  const menuPanel = document.getElementById('menuPanel');
+  const resultTitle = document.getElementById('resultTitle');
+  const resultMessage = document.getElementById('resultMessage');
+  const toast = document.getElementById('toast');
+
+  let selectedTherapy = null;
+  let toastTimeout = null;
+
+  // 3. FUNÇÃO PARA EXIBIR NOTIFICAÇÃO RÁPIDA (TOAST)
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
+  }
+
+  // 4. FUNÇÃO DE NAVEGAÇÃO ENTRE TELAS (go)
+  function go(id) {
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    screens.forEach(s => s.classList.toggle('active', s.id === id));
+
+    navItems.forEach(b => {
+      if (b.dataset.go === id) b.setAttribute('aria-current', 'page');
+      else b.removeAttribute('aria-current');
+    });
+
+    menuPanel.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Abrir menu de navegação');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    const heading = target.querySelector('h1, h2');
+    if (heading) {
+      heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    }
+  }
+
+  // 5. FUNÇÃO PARA SELECIONAR UMA TERAPIA DO CATÁLOGO
+  function selectTherapy(therapyName, therapyPrice) {
+    selectedTherapy = { name: therapyName, price: therapyPrice };
+
+    resultTitle.textContent = `Interesse em ${therapyName}`;
+    resultMessage.textContent = `Você selecionou a terapia ${therapyName} (${therapyPrice}). Toque no botão abaixo para abrir o WhatsApp da Andrea já com esta opção preenchida.`;
+
+    showToast(`Terapia selecionada: ${therapyName}`);
+    go('result');
+  }
+
+  // 6. FUNÇÃO PARA ABRIR CONVERSA NO WHATSAPP
+  function openWhatsApp() {
+    const message = selectedTherapy
+      ? `Olá, Andrea! Vi o seu site de Terapias Holísticas e gostaria de saber mais sobre a sessão de ${selectedTherapy.name} (${selectedTherapy.price}).`
+      : `Olá, Andrea! Vi o seu site de Terapias Holísticas e gostaria de saber mais informações sobre os atendimentos.`;
+
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+  }
+
+  // 7. ATIVAÇÃO DOS CLIQUES NOS BOTÕES E CARTÕES
+  document.querySelectorAll('[data-go]').forEach(el => {
+    el.addEventListener('click', () => go(el.dataset.go));
+  });
+
+  document.querySelectorAll('[data-contact]').forEach(el => {
+    el.addEventListener('click', openWhatsApp);
+  });
+
+  document.querySelectorAll('.therapy-card').forEach(card => {
+    card.addEventListener('click', () => {
+      selectTherapy(card.dataset.therapy, card.dataset.price);
+    });
+  });
+
+  menuToggle.addEventListener('click', () => {
+    const isOpen = !menuPanel.classList.contains('open');
+    menuPanel.classList.toggle('open', isOpen);
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    menuToggle.setAttribute('aria-label', isOpen ? 'Fechar menu de navegação' : 'Abrir menu de navegação');
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && menuPanel.classList.contains('open')) {
+      menuPanel.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.focus();
+    }
+  });
+})();
+</script>
+</body>
+</html>
