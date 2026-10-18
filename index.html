@@ -1136,29 +1136,34 @@ footer {
   });
 
   document.querySelectorAll('.therapy-card').forEach(card => {
-  function selectCard() {
-    selectTherapy(card.dataset.therapy, card.dataset.price);
-  }
-
-  card.addEventListener('click', event => {
-  if (event.target.closest('button')) {
-    return;
-  }
-
-  selectCard();
-});
-card.querySelector('.card-arrow').addEventListener('click', selectCard);
-
-  card.addEventListener('keydown', event => {
-    if (
-      event.target === card &&
-      (event.key === 'Enter' || event.key === ' ')
-    ) {
-      event.preventDefault();
-      selectCard();
+    function selectCard() {
+      selectTherapy(card.dataset.therapy, card.dataset.price);
     }
+
+    card.addEventListener('click', event => {
+      if (event.target.closest('button')) {
+        return;
+      }
+
+      selectCard();
+    });
+
+    const arrowButton = card.querySelector('.card-arrow');
+
+    if (arrowButton) {
+      arrowButton.addEventListener('click', selectCard);
+    }
+
+    card.addEventListener('keydown', event => {
+      if (
+        event.target === card &&
+        (event.key === 'Enter' || event.key === ' ')
+      ) {
+        event.preventDefault();
+        selectCard();
+      }
+    });
   });
-});
 
   menuToggle.addEventListener('click', () => {
   const isOpen = !menuPanel.classList.contains('open');
