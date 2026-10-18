@@ -1141,12 +1141,14 @@ footer {
   }
 
   card.addEventListener('click', event => {
-    if (event.target.closest('button')) {
-      return;
-    }
+  if (event.target.closest('button')) {
+    return;
+  }
 
-    selectCard();
-  });
+  selectCard();
+});
+
+card.querySelector('.card-arrow').addEventListener('click', selectCard);
 
   card.addEventListener('keydown', event => {
     if (
