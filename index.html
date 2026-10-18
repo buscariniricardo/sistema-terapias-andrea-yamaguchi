@@ -899,7 +899,14 @@ footer {
 
         <div class="therapy-list" id="therapyList">
           <!-- Cartão 1: Radiestesia -->
-          <article class="therapy-card" data-therapy="Radiestesia" data-price="R$ 120,00">
+          <article
+  class="therapy-card"
+  data-therapy="Radiestesia"
+  data-price="R$ 120,00"
+  tabindex="0"
+  role="button"
+  aria-label="Selecionar Radiestesia, R$ 120,00"
+>
             <div class="therapy-visual" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 19 14 12 22 5 14 12 2"/><line x1="5" y1="14" x2="19" y2="14"/></svg>
             </div>
@@ -914,7 +921,14 @@ footer {
           </article>
 
           <!-- Cartão 2: Shiatsu -->
-          <article class="therapy-card" data-therapy="Shiatsu" data-price="R$ 150,00">
+          <article
+  class="therapy-card"
+  data-therapy="Shiatsu"
+  data-price="R$ 150,00"
+  tabindex="0"
+  role="button"
+  aria-label="Selecionar Shiatsu, R$ 150,00"
+>
             <div class="therapy-visual" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22c4.97 0 9-4.03 9-9-4.97 0-9 4.03-9 9zm0 0c-4.97 0-9-4.03-9-9 4.97 0 9 4.03 9 9zm0-6c0-4.97-4.03-9-9-9 0 4.97 4.03 9 9 9zm0 0c0-4.97 4.03-9 9-9 0 4.97-4.03 9-9 9z"/></svg>
             </div>
@@ -929,7 +943,14 @@ footer {
           </article>
 
           <!-- Cartão 3: Reiki -->
-          <article class="therapy-card" data-therapy="Reiki" data-price="R$ 100,00">
+          <article
+  class="therapy-card"
+  data-therapy="Reiki"
+  data-price="R$ 100,00"
+  tabindex="0"
+  role="button"
+  aria-label="Selecionar Reiki, R$ 100,00"
+>
             <div class="therapy-visual" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
             </div>
@@ -1115,17 +1136,51 @@ footer {
   });
 
   document.querySelectorAll('.therapy-card').forEach(card => {
-    card.addEventListener('click', () => {
-      selectTherapy(card.dataset.therapy, card.dataset.price);
-    });
+  function selectCard() {
+    selectTherapy(card.dataset.therapy, card.dataset.price);
+  }
+
+  card.addEventListener('click', event => {
+    if (event.target.closest('button')) {
+      return;
+    }
+
+    selectCard();
   });
 
-  menuToggle.addEventListener('click', () => {
-    const isOpen = !menuPanel.classList.contains('open');
-    menuPanel.classList.toggle('open', isOpen);
-    menuToggle.setAttribute('aria-expanded', String(isOpen));
-    menuToggle.setAttribute('aria-label', isOpen ? 'Fechar menu de navegação' : 'Abrir menu de navegação');
+  card.addEventListener('keydown', event => {
+    if (
+      event.target === card &&
+      (event.key === 'Enter' || event.key === ' ')
+    ) {
+      event.preventDefault();
+      selectCard();
+    }
   });
+});
+
+  menuToggle.addEventListener('click', () => {
+  const isOpen = !menuPanel.classList.contains('open');
+
+  menuPanel.classList.toggle('open', isOpen);
+
+  menuToggle.setAttribute('aria-expanded', String(isOpen));
+
+  menuToggle.setAttribute(
+    'aria-label',
+    isOpen ? 'Fechar menu de navegação' : 'Abrir menu de navegação'
+  );
+
+  if (isOpen) {
+    const firstMenuItem = menuPanel.querySelector('button');
+
+    if (firstMenuItem) {
+      firstMenuItem.focus();
+    }
+  } else {
+    menuToggle.focus();
+  }
+});
 
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && menuPanel.classList.contains('open')) {
