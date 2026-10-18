@@ -1184,12 +1184,15 @@ card.querySelector('.card-arrow').addEventListener('click', selectCard);
 });
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && menuPanel.classList.contains('open')) {
-      menuPanel.classList.remove('open');
-      menuToggle.setAttribute('aria-expanded', 'false');
-      menuToggle.focus();
-    }
-  });
+  if (e.key === 'Escape' && menuPanel.classList.contains('open')) {
+    menuPanel.classList.remove('open');
+
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Abrir menu de navegação');
+
+    menuToggle.focus();
+  }
+});
 })();
 </script>
 </body>
