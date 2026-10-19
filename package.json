@@ -1,0 +1,26 @@
+{
+  "name": "sistema-terapias-andrea-yamaguchi-git",
+  "version": "1.0.0",
+  "description": "MVP de um site responsivo para apresentar os serviços de terapias holísticas de Andrea Yamaguchi, organizar as terapias disponíveis e facilitar o contato de pessoas interessadas pelo WhatsApp.",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buscariniricardo/sistema-terapias-andrea-yamaguchi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/buscariniricardo/sistema-terapias-andrea-yamaguchi/issues"
+  },
+  "homepage": "https://github.com/buscariniricardo/sistema-terapias-andrea-yamaguchi#readme",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^5.0.5",
+    "jsdom": "^30.1.3",
+    "vitest": "^5.0.5"
+  }
+}
